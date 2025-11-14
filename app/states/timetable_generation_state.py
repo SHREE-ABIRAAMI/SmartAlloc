@@ -10,6 +10,7 @@ class Teacher(TypedDict):
 class Course(TypedDict):
     id: int
     name: str
+    is_lab: bool | None
 
 
 class Section(TypedDict):
@@ -41,13 +42,19 @@ class TimetableGenerationState(rx.State):
     teachers: list[Teacher] = [
         {"id": 1, "full_name": "Prof. Dumbledore"},
         {"id": 2, "full_name": "Prof. Snape"},
+        {"id": 3, "full_name": "Prof. McGonagall"},
     ]
     courses: list[Course] = [
-        {"id": 1, "name": "Potions"},
-        {"id": 2, "name": "Defense Against the Dark Arts"},
+        {"id": 1, "name": "Potions", "is_lab": True},
+        {"id": 2, "name": "Defense Against the Dark Arts", "is_lab": False},
+        {"id": 3, "name": "Transfiguration", "is_lab": False},
     ]
     sections: list[Section] = [{"id": 1, "name": "1A"}, {"id": 2, "name": "2B"}]
-    rooms: list[Room] = [{"id": 1, "name": "Dungeon"}, {"id": 2, "name": "Room 3C"}]
+    rooms: list[Room] = [
+        {"id": 1, "name": "Dungeon"},
+        {"id": 2, "name": "Room 3C"},
+        {"id": 3, "name": "Charms Classroom"},
+    ]
     departments: list[Department] = [{"id": 1, "name": "Magic"}]
     days_of_week: list[str] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
     timetable: list[TimetableSlot] = [
@@ -64,9 +71,18 @@ class TimetableGenerationState(rx.State):
             "day": "Monday",
             "start_time": "10:00",
             "end_time": "11:00",
+            "course": "Transfiguration",
+            "teacher": "Prof. McGonagall",
+            "section": "1A",
+            "room": "Charms Classroom",
+        },
+        {
+            "day": "Monday",
+            "start_time": "11:00",
+            "end_time": "12:00",
             "course": "Defense Against the Dark Arts",
             "teacher": "Prof. Dumbledore",
-            "section": "1A",
+            "section": "2B",
             "room": "Room 3C",
         },
         {
@@ -75,7 +91,16 @@ class TimetableGenerationState(rx.State):
             "end_time": "10:00",
             "course": "Defense Against the Dark Arts",
             "teacher": "Prof. Dumbledore",
-            "section": "2B",
+            "section": "1A",
             "room": "Room 3C",
+        },
+        {
+            "day": "Tuesday",
+            "start_time": "10:00",
+            "end_time": "11:00",
+            "course": "Potions",
+            "teacher": "Prof. Snape",
+            "section": "2B",
+            "room": "Dungeon",
         },
     ]
