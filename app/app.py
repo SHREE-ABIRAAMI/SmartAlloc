@@ -172,7 +172,13 @@ app = rx.App(
 app.add_page(index, route="/")
 app.add_page(login, route="/login")
 app.add_page(signup, route="/signup")
-app.add_page(lambda: placeholder_page("Dashboard"), route="/dashboard")
+from app.states.db_state import DBState
+
+app.add_page(
+    lambda: placeholder_page("Dashboard"),
+    route="/dashboard",
+    on_load=DBState.initialize_app_data,
+)
 app.add_page(lambda: placeholder_page("Attendance"), route="/attendance")
 app.add_page(lambda: placeholder_page("Data Management"), route="/data-management")
 app.add_page(lambda: placeholder_page("Teachers"), route="/teachers")
