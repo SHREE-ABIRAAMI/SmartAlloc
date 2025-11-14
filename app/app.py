@@ -91,7 +91,7 @@ def login() -> rx.Component:
             rx.el.div(
                 auth_input("Username", "text", AuthState.set_username),
                 auth_input("Password", "password", AuthState.set_password),
-                auth_button("Log In", AuthState.login),
+                auth_button("Log In", AuthState.handle_login),
                 class_name="flex flex-col gap-4",
             ),
             rx.el.p(
@@ -120,7 +120,10 @@ def signup() -> rx.Component:
                 auth_input("Username", "text", AuthState.set_username),
                 auth_input("Email", "email", AuthState.set_email),
                 auth_input("Password", "password", AuthState.set_password),
-                auth_button("Sign Up", AuthState.signup),
+                auth_input(
+                    "Confirm Password", "password", AuthState.set_confirm_password
+                ),
+                auth_button("Sign Up", AuthState.handle_signup),
                 class_name="flex flex-col gap-4",
             ),
             rx.el.p(
