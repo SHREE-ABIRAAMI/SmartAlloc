@@ -1,121 +1,182 @@
 import reflex as rx
-from app.states.subject_state import SubjectState
+from app.states.auth_state import AuthState
 
 
-def subject_management_page() -> rx.Component:
+def animated_background() -> rx.Component:
     return rx.el.div(
-        rx.el.h1("Manage Subjects", class_name="text-2xl font-bold mb-4"),
+        rx.el.div(class_name="light x1"),
+        rx.el.div(class_name="light x2"),
+        rx.el.div(class_name="light x3"),
+        rx.el.div(class_name="light x4"),
+        rx.el.div(class_name="light x5"),
+        rx.el.div(class_name="light x6"),
+        rx.el.div(class_name="light x7"),
+        rx.el.div(class_name="light x8"),
+        rx.el.div(class_name="light x9"),
+        class_name="absolute top-0 left-0 w-full h-full z-[-1] overflow-hidden",
+    )
+
+
+def glass_card(*children, **props) -> rx.Component:
+    return rx.el.div(
+        *children,
+        bg="rgba(255, 255, 255, 0.05)",
+        backdrop_filter="blur(10px)",
+        class_name="border border-gray-700 rounded-2xl shadow-lg p-8",
+        **props,
+    )
+
+
+def auth_input(placeholder: str, type: str, field) -> rx.Component:
+    return rx.el.input(
+        placeholder=placeholder,
+        type=type,
+        on_change=field,
+        class_name="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-all duration-300",
+    )
+
+
+def auth_button(text: str, on_click: rx.event.EventType) -> rx.Component:
+    return rx.el.button(
+        text,
+        on_click=on_click,
+        class_name="w-full p-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg",
+    )
+
+
+def base_layout(child: rx.Component) -> rx.Component:
+    return rx.el.main(
+        animated_background(),
         rx.el.div(
-            rx.el.input(
-                placeholder="Subject Name",
-                on_change=SubjectState.set_new_subject_name,
-                class_name="p-2 border rounded-md",
-                default_value=SubjectState.new_subject_name,
-            ),
-            rx.el.select(
-                rx.foreach(
-                    SubjectState.departments,
-                    lambda dept: rx.el.option(dept, value=dept),
-                ),
-                value=SubjectState.new_subject_department,
-                on_change=SubjectState.set_new_subject_department,
-                class_name="p-2 border rounded-md",
-            ),
-            rx.el.select(
-                rx.foreach(
-                    SubjectState.years,
-                    lambda year: rx.el.option(year.to_string(), value=year.to_string()),
-                ),
-                value=SubjectState.new_subject_year.to_string(),
-                on_change=SubjectState.set_new_subject_year,
-                class_name="p-2 border rounded-md",
-            ),
-            rx.el.button(
-                "Add Subject",
-                on_click=SubjectState.add_subject,
-                class_name="bg-blue-500 text-white p-2 rounded-md",
-            ),
-            class_name="flex gap-4 mb-4 items-center",
+            child,
+            class_name="relative z-10 flex flex-col items-center justify-center min-h-screen p-4",
         ),
-        rx.el.table(
-            rx.el.thead(
-                rx.el.tr(
-                    rx.el.th("ID", class_name="px-4 py-2"),
-                    rx.el.th("Name", class_name="px-4 py-2"),
-                    rx.el.th("Department", class_name="px-4 py-2"),
-                    rx.el.th("Year", class_name="px-4 py-2"),
-                    rx.el.th("Actions", class_name="px-4 py-2"),
-                )
-            ),
-            rx.el.tbody(
-                rx.foreach(
-                    SubjectState.subjects,
-                    lambda subject: rx.el.tr(
-                        rx.el.td(subject["id"], class_name="border px-4 py-2"),
-                        rx.el.td(subject["name"], class_name="border px-4 py-2"),
-                        rx.el.td(subject["department"], class_name="border px-4 py-2"),
-                        rx.el.td(subject["year"], class_name="border px-4 py-2"),
-                        rx.el.td(
-                            rx.el.button(
-                                rx.icon(tag="trash-2", class_name="h-4 w-4"),
-                                on_click=lambda: SubjectState.delete_subject(
-                                    subject["id"]
-                                ),
-                                class_name="text-red-500 hover:text-red-700",
-                            ),
-                            class_name="border px-4 py-2 text-center",
-                        ),
-                    ),
-                )
-            ),
-            class_name="w-full text-left table-auto",
-        ),
-        class_name="p-8",
+        class_name="font-['Poppins'] bg-[#0d1117] text-white",
     )
 
 
 def index() -> rx.Component:
-    return rx.el.main(
+    return base_layout(
         rx.el.div(
             rx.el.h1(
-                "Environment is ready...",
-                class_name="text-3xl font-semibold text-gray-800 mb-4",
+                "SmartAlloc",
+                class_name="text-7xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 font-['Montserrat_Alternates']",
             ),
             rx.el.p(
-                "Keep prompting to build your app!", class_name="text-gray-600 mb-12"
+                "Intelligent Timetable Automation",
+                class_name="mt-4 text-2xl text-gray-400 font-['Quicksand']",
             ),
-            rx.el.a(
-                rx.el.button(
-                    "View Documentation",
-                    rx.icon("arrow-right", class_name="ml-2", size=16),
-                    class_name="bg-violet-500 text-white px-6 py-3 rounded-lg hover:bg-violet-600 transition-colors flex items-center font-medium",
+            rx.el.div(
+                rx.el.a(
+                    rx.el.button(
+                        "Get Started",
+                        class_name="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg",
+                    ),
+                    href="/login",
                 ),
-                href="https://reflex.dev/docs/ai-builder/overview/best-practices/",
-                target="_blank",
+                class_name="mt-8",
             ),
-            rx.el.a(
-                rx.el.button(
-                    "Manage Subjects",
-                    class_name="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors flex items-center font-medium mt-4",
+            class_name="text-center",
+        )
+    )
+
+
+def login() -> rx.Component:
+    return base_layout(
+        glass_card(
+            rx.el.h2(
+                "Welcome Back",
+                class_name="text-3xl font-bold text-center text-white mb-6 font-['Quicksand']",
+            ),
+            rx.el.div(
+                auth_input("Username", "text", AuthState.set_username),
+                auth_input("Password", "password", AuthState.set_password),
+                auth_button("Log In", AuthState.login),
+                class_name="flex flex-col gap-4",
+            ),
+            rx.el.p(
+                "Don't have an account? ",
+                rx.el.a(
+                    "Sign Up",
+                    href="/signup",
+                    class_name="text-purple-400 hover:underline",
                 ),
-                href="/subjects",
+                class_name="text-center mt-6 text-gray-400",
             ),
-            class_name="flex flex-col items-center justify-center text-center min-h-screen",
-        ),
-        class_name="font-['Inter'] bg-white",
+            width="400px",
+        )
+    )
+
+
+def signup() -> rx.Component:
+    return base_layout(
+        glass_card(
+            rx.el.h2(
+                "Create Account",
+                class_name="text-3xl font-bold text-center text-white mb-6 font-['Quicksand']",
+            ),
+            rx.el.div(
+                auth_input("Full Name", "text", AuthState.set_full_name),
+                auth_input("Username", "text", AuthState.set_username),
+                auth_input("Email", "email", AuthState.set_email),
+                auth_input("Password", "password", AuthState.set_password),
+                auth_button("Sign Up", AuthState.signup),
+                class_name="flex flex-col gap-4",
+            ),
+            rx.el.p(
+                "Already have an account? ",
+                rx.el.a(
+                    "Log In",
+                    href="/login",
+                    class_name="text-purple-400 hover:underline",
+                ),
+                class_name="text-center mt-6 text-gray-400",
+            ),
+            width="400px",
+        )
+    )
+
+
+def placeholder_page(title: str) -> rx.Component:
+    return base_layout(rx.el.h1(f"{title} Page - Coming Soon"))
+
+
+def page_404() -> rx.Component:
+    return base_layout(
+        rx.el.div(
+            rx.el.h1("404", class_name="text-9xl font-bold text-purple-500"),
+            rx.el.p("Page Not Found", class_name="text-2xl mt-4"),
+            rx.el.a(
+                "Go Home", href="/", class_name="mt-8 text-blue-400 hover:underline"
+            ),
+            class_name="text-center",
+        )
     )
 
 
 app = rx.App(
     theme=rx.theme(appearance="light"),
+    stylesheets=["/animations.css"],
     head_components=[
         rx.el.link(rel="preconnect", href="https://fonts.googleapis.com"),
         rx.el.link(rel="preconnect", href="https://fonts.gstatic.com", cross_origin=""),
         rx.el.link(
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap",
+            href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@700&family=Poppins:wght@400;600&family=Quicksand:wght@500;700&display=swap",
             rel="stylesheet",
         ),
     ],
 )
-app.add_page(index)
-app.add_page(subject_management_page, route="/subjects")
+app.add_page(index, route="/")
+app.add_page(login, route="/login")
+app.add_page(signup, route="/signup")
+app.add_page(lambda: placeholder_page("Dashboard"), route="/dashboard")
+app.add_page(lambda: placeholder_page("Attendance"), route="/attendance")
+app.add_page(lambda: placeholder_page("Data Management"), route="/data-management")
+app.add_page(lambda: placeholder_page("Teachers"), route="/teachers")
+app.add_page(lambda: placeholder_page("Rooms"), route="/rooms")
+app.add_page(lambda: placeholder_page("Timings"), route="/timings")
+app.add_page(lambda: placeholder_page("Courses"), route="/courses")
+app.add_page(lambda: placeholder_page("Departments"), route="/departments")
+app.add_page(lambda: placeholder_page("Sections"), route="/sections")
+app.add_page(lambda: placeholder_page("Generate Timetable"), route="/generate")
+app.add_page(page_404, route="/404")

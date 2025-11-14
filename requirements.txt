@@ -1,4 +1,6 @@
-
 reflex==0.8.17
-PyGithub
+aiosqlite>=0.21.0
+reportlab
+pdfkit
 together
+PyGithub
